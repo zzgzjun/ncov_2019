@@ -1,0 +1,126 @@
+body{
+    margin: 0;
+    background: #333333;
+    font-family: "Microsoft YaHei UI";
+}
+#title{
+    position: absolute;
+    width:40%;
+    height: 10%;
+    top:0;
+    left: 30%;
+    /*background: #666666;*/
+    font-size: 2vw;
+    font-weight: bold;
+    color:white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.num{
+    width:25%;
+    float:left;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: gold;
+    font-size: 1vw;
+}
+.txt{
+    width: 25%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1vw;
+}
+h2{
+    margin: 0;
+}
+#time{
+    position: absolute;
+    /*width:30%;*/
+    height: 10%;
+    top:4%;
+    right:2%;
+    color: #ffffff;
+    font-size: 16px;
+
+}
+#left_one{
+    position: absolute;
+    width:30%;
+    height:45%;
+    top:10%;
+    left: 0;
+    background: #777777;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#left_two{
+    position: absolute;
+    width:30%;
+    height: 45%;
+    top:55%;
+    left: 0;
+    background: #222222;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#middle_one{
+    position: absolute;
+    width:40%;
+    height: 20%;
+    top:10%;
+    left: 30%;
+    color: white;
+
+
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+}
+#middle_two{
+    position: absolute;
+    width:40%;
+    height:70%;
+    top:30%;
+    left: 30%;
+    /*background: #666666;*/
+    /*background: url("/static/images/xk.jpg");*/
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#right_one{
+    position: absolute;
+    width:30%;
+    height:45%;
+    top:10%;
+    left: 70%;
+    background: #555555;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#right_two{
+    position: absolute;
+    width:30%;
+    height: 45%;
+    top:55%;
+    left: 70%;
+    background: #888888;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
