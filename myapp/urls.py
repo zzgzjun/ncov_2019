@@ -5,7 +5,6 @@ urlpatterns = [
     url(r'add/', views.add),
     url(r'add_city/', views.add_city),
     url(r'index/', views.index),
-    url(r'main/', views.main),
     url(r'', views.main),
     url(r'time/', views.time),
     url(r'image/', views.image),

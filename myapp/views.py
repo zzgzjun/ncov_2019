@@ -94,7 +94,8 @@ def main(request):
     history_list=History.objects.all()
     hotsearch_list=HotSearch.objects.all()
 
-    return render(request, 'myapp/main.html',locals())
+    # return render(request, 'myapp/main.html',locals())
+    return render(request, 'myapp/index2.html',locals())
 
 
 def time(request):

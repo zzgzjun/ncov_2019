@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>全国疫情实时追踪</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/echarts.min.js"></script>
@@ -32,20 +32,20 @@
 <div id="right_one">我是右侧上</div>
 <div id="right_two"></div>
 
-<script type="text/javascript">
-    function get_time() {
-        $.ajax({
-            url:'/time/',
-            type:'get',
-            data:'',
-            success:function (data) {
-                $('#time').html(data)
-            },
-        });
-    }
-    get_time();
-    setInterval(get_time,1000);
-</script>
+{#<script type="text/javascript">#}
+{#    function get_time() {#}
+{#        $.ajax({#}
+{#            url:'/time/',#}
+{#            type:'get',#}
+{#            data:'',#}
+{#            success:function (data) {#}
+{#                $('#time').html(data)#}
+{#            },#}
+{#        });#}
+{#    }#}
+{#    get_time();#}
+{#    setInterval(get_time,10000000);#}
+{#</script>#}
 
 
 <script type="text/javascript">
