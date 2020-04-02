@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+    <title>nCoV-Admin</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap-maizi.css"/>
+    <link rel="stylesheet" href="/static/css/content-style.css"/>
+
+
+{#    <script src="/static/js/Chart.js"></script>#}
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/echarts.min.js"></script>
+    <script src="/static/js/china.js"></script>
+    <script src="/static/js/echarts-wordcloud.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+<!-- 导航 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <!--小屏幕导航按钮和logo-->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="index.html" class="navbar-brand"> nCoV-Admin</a>
+        </div>
+        <!--小屏幕导航按钮和logo-->
+        <!--导航-->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;后台首页</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;用户管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-expand"></span>&nbsp;&nbsp;机器管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;服务管理</a></li>
+{#                <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;日志管理</a></li>#}
+{#                <li><a href="#"><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;使用文档</a></li>#}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        admin
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a href="index.html"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;个人设置</a></li>
+                    </ul>
+                </li>
+                <li><a href="#"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a></li>
+            </ul>
+        </div>
+        <!--导航-->
+    </div>
+</nav>
+<!-- 导航 -->
+<!-- 主体 -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+{#                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>#}
+{#                <h4>网站程序有漏洞，急需修复！</h4>#}
+{#                <p>容易造成攻击，请即可修复！</p>#}
+{#                <p>#}
+{#                    <button type="button" class="btn btn-danger">立即修复</button>#}
+{#                    <button type="button" class="btn btn-default"  data-dismiss="alert"  >稍后处理</button>#}
+{#                </p>#}
+                <div class="row text-center">
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h3>{{ last_info.confirm }}</h3></div>
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h3>{{ last_info.suspect }}</h3></div>
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h3>{{ heal }}</h3></div>
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h3>{{ last_info.dead }}</h3></div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h4>累计确诊</h4></div>
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h4>剩余疑似</h4></div>
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h4>累计治愈</h4></div>
+                    <div class="col-xs-3 col-md-2 col-md-offset-1"><h4>累计死亡</h4></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading">中国疫情地图</div>
+                <div class="panel-body" id="middle_two" style="height:350px">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">新冠确诊累计图</div>
+                <div class="panel-body" id="left_one" style="height:300px">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">新冠疫情新增图</div>
+                <div class="panel-body" id="left_two" style="height:300px">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">湖北以外新冠累计确诊前八</div>
+                <div class="panel-body" id="right_one" style="height:300px">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">冠装病毒疫情热搜</div>
+                <div class="panel-body" id="right_two" style="height:300px">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 主体 -->
+<!-- 页脚 -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-muted center">
+                    Copyright&nbsp;©&nbsp;2017-2018&nbsp;&nbsp;phachon@163.com&nbsp;&nbsp;
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--/页脚 -->
+
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart_left_one = echarts.init(document.getElementById('left_one'),'dark');
+        var myChart_left_two = echarts.init(document.getElementById('left_two'),'dark');
+        var myChart_middle_two = echarts.init(document.getElementById('middle_two'),'dark');
+        var myChart_right_two = echarts.init(document.getElementById('right_two'),'dark');
+        var myChart_right_one = echarts.init(document.getElementById('right_one'),'dark');
+
+        {#comfirm={{ hotsearch_list.confirm }};#}
+        value=[10000,20000,30000,40000,90000];
+
+        // 指定图表的配置项和数据
+        let option_left_one = {
+            title: {
+                text: '',
+                {#left: 'center',#}
+                {#top:'5%'#}
+                textStyle: {},
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+			toolbox: {
+				feature: {
+					saveAsImage: {}
+				}
+			},
+            legend: {
+            },
+            dataZoom: [
+                {
+                    id: 'dataZoomX',
+                    type: 'inside',
+                    xAxisIndex: [0],
+                    filterMode: 'filter',
+                    start:20,
+                    end:90,
+                },
+             ],
+
+            dataset:{
+                source:[
+                    ['date','确诊','疑似','死亡','治愈'],
+                    {% for row in history_list %}
+                        ['{{ row.date|date:'Y-m-j'}}',{{ row.confirm }},{{ row.suspect }},{{ row.dead }},{{ row.heal }}],
+                    {% endfor %}
+
+                ]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                show:false,
+                containLabel: true
+            },
+            xAxis: [
+                {
+                type:'time',
+                //boundaryGap:false
+                  splitLine: {
+                     show: false
+                },
+                axisPointer: {type: 'shadow'}
+                },
+
+            ],
+            yAxis:[
+                {
+                name:'',
+                type:'value',
+                max:90000,
+                interval:10000,
+                splitLine: {
+                     show: false
+                },
+
+                },
+            ],
+            series: [
+                {
+                //name: '确诊',
+                type: 'line',
+                yAxisIndex: 0,
+                xAxisIndex: 0,
+                data:0,
+                lineStyle:{
+                    color: 'rgba(255,0,0,1)'
+                },
+                itemStyle:{
+                    color: 'rgba(255,0,0,1)'
+                },
+                encode:{
+                 x:'date',
+                 y:'确诊',
+                 seriesName: [1]
+                }
+                },
+                {
+                //name: '疑似',
+                type: 'line',
+                yAxisIndex: 0,
+                xAxisIndex: 0,
+                lineStyle:{
+                    color: '#FF8c00'
+                },
+                itemStyle:{
+                    color: '#FF8c00'
+                },
+                encode:{
+                 x:'date',
+                 y:'疑似',
+                 seriesName: [2]
+                }
+                },
+                {
+                    //name: '治愈',
+                    type: 'line',
+                    yAxisIndex: 0,
+                    xAxisIndex: 0,
+                    barWidth: '40%',
+                    itemStyle:{
+                        color: 'rgba(0,153,102,0.5)'
+                    },
+                    encode:{
+                        x:'date',
+                        y:'治愈',
+                        seriesName: [4]
+                    }
+                },
+                {
+                //name: '死亡',
+                type: 'line',
+                yAxisIndex: 0,
+                xAxisIndex: 0,
+                barGap: '-100%', // Make series be overlap
+                barWidth: '40%',
+                itemStyle:{
+                    color: 'rgba(0,0,0,0.75)'
+                },
+                encode:{
+                 x:'date',
+                 y:'死亡',
+                 seriesName: [3]
+                }
+                }
+
+            ]
+        };
+        let option_left_two = {
+            title: {
+                text: '',
+                {#left: 'center',#}
+                {#top:'5%'#}
+                textStyle: {},
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+			toolbox: {
+				feature: {
+					saveAsImage: {}
+				}
+			},
+            legend: {
+            },
+            dataZoom: [
+                {
+                    id: 'dataZoomX',
+                    type: 'inside',
+                    xAxisIndex: [0],
+                    filterMode: 'filter',
+                    start:20,
+                    end:80,
+                },
+             ],
+
+            dataset:{
+                source:[
+                    ['date','新增确诊','新增疑似','新增治愈'],
+                    {% for row in history_list %}
+                        ['{{ row.date|date:'Y-m-j'}}',{{ row.confirm_add }},{{ row.suspect_add }},{{ row.heal_add }}],
+                    {% endfor %}
+
+                ]
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                show:false,
+                containLabel: true
+            },
+            xAxis: [
+                {
+                type:'time',
+                //boundaryGap:false
+                  splitLine: {
+                     show: false
+                },
+                axisPointer: {type: 'shadow'}
+                },
+
+            ],
+            yAxis:[
+                {
+                {#name:'确诊、治愈、死亡、疑似',#}
+                name:'',
+                type:'value',
+
+                max:16000,
+                interval:1600,
+                splitLine: {
+                     show: false
+                },
+                },
+            ],
+            series: [
+                {
+                //name: '确诊',
+                type: 'line',
+                yAxisIndex: 0,
+                xAxisIndex: 0,
+                data:0,
+                lineStyle:{
+                    color: 'rgba(255,0,0,1)'
+                },
+                itemStyle:{
+                    color: 'rgba(255,0,0,1)'
+                },
+                encode:{
+                 x:'date',
+                 y:'新增确诊',
+                 seriesName: [1]
+                }
+                },
+                {
+                //name: '疑似',
+                type: 'line',
+                yAxisIndex: 0,
+                xAxisIndex: 0,
+                lineStyle:{
+                    color: '#FF8c00'
+                },
+                itemStyle:{
+                    color: '#FF8c00'
+                },
+                encode:{
+                 x:'date',
+                 y:'新增疑似',
+                 seriesName: [2]
+                }
+                },
+                {
+                    //name: '治愈',
+                    type: 'line',
+                    yAxisIndex: 0,
+                    xAxisIndex: 0,
+                    barWidth: '40%',
+                    itemStyle:{
+                        color: 'rgba(0,153,102,0.5)'
+                    },
+                    encode:{
+                        x:'date',
+                        y:'新增治愈',
+                        seriesName: [3]
+                    }
+                },
+
+            ]
+        };
+
+	    let option_middle_two_data=[
+            {% for row in map_data %}
+                {name:'{{row.province}}',value:{{ row.value }}},
+            {% endfor %}
+
+        ];
+        let option_middle_two = {
+                {#backgroundColor: 'transparent',#}
+                backgroundColor: '#333333',
+                title: {
+                    text: '',
+                    subtext: '',
+                    x:'center',
+                    top:20,
+                    textStyle:{
+                        fontSize:25,
+                    }
+                },
+                tooltip : {
+                    trigger: 'item'
+                },
+
+                toolbox: {
+				feature: {
+					saveAsImage: {}
+				}
+			},
+
+                //左侧小导航图标
+                visualMap: {
+                    show : true,
+                    x: 'left',
+                    y: 'center',
+                    splitList: [
+                        {start: 2000, end: 100000,color:'#390302'},
+                        {start: 0, end:20,color:'#a6a06c'},
+                        {start: 20, end:50,color:'#f5f120'},
+                        {start: 50, end: 100,color:'#eaca28'},
+                        {start: 100, end: 200,color:'#ea933f'},
+                        {start: 200, end: 500,color:'#ef5814'},
+                        {start: 500, end: 1000,color:'#9e0f09'},
+                        {start: 1000, end: 2000,color:'#5e0306'},
+                         ],
+                     },
+                //配置属性
+                series: [{
+                    name: '数据',
+                    type: 'map',
+                    mapType: 'china',
+                    backgroundColor:'transparent',
+                    color:'transparent',
+                    roam: true,
+                    label: {
+                        normal: {
+                            show: true  //省份名称
+                        },
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    data:option_middle_two_data  //数据
+                }]
+            };
+
+
+        let option_right_one = {
+    color: ['#3398DB'],
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+            title:{
+
+            text:''
+    },
+
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: [
+                {% for row in eighth_data %}
+                    '{{row.province }}',
+                {% endfor %}
+
+            ],
+            axisTick: {
+                alignWithLabel: true
+            }
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '累计确诊',
+            type: 'bar',
+            barWidth: '60%',
+            data: [
+                {% for row in eighth_data %}
+                    {{ row.value }},
+                {% endfor %}
+
+            ],
+
+        }
+    ]
+};
+
+        let option_right_two = {
+ 			    title: {
+ 			        text: '',
+ 			        x: 'center',
+ 			        textStyle: {
+ 			            fontSize: 23,
+ 			            color:'#FFFFFF'
+ 			        }
+
+ 			    },
+ 			    tooltip: {
+ 			        show: true
+ 			    },
+ 			    series: [{
+ 			        name: '冠装病毒疫情热搜',
+ 			        type: 'wordCloud',
+ 			        sizeRange: [6, 66],
+ 			        rotationRange: [-45, 90],
+ 			        textPadding: 0,
+ 			        autoSize: {
+ 			            enable: true,
+ 			            minSize: 6
+ 			        },
+ 			        textStyle: {
+ 			            normal: {
+ 			                color: function() {
+ 			                    return 'rgb(' + [
+ 			                        Math.round(Math.random() * 160),
+ 			                        Math.round(Math.random() * 160),
+ 			                        Math.round(Math.random() * 160)
+ 			                    ].join(',') + ')';
+ 			                }
+ 			            },
+ 			            emphasis: {
+ 			                shadowBlur: 10,
+ 			                shadowColor: '#333'
+ 			            }
+ 			        },
+ 			    }]
+ 			};
+        let option_right_two_data = [
+                {% for row in hotsearch_list %}
+                    {name:'{{ row.name }}',value:{{row.value}}},
+                {% endfor %}
+            ];
+        option_right_two.series[0].data = option_right_two_data;
+
+
+        myChart_left_one.setOption(option_left_one);
+        myChart_left_two.setOption(option_left_two);
+        myChart_middle_two.setOption(option_middle_two);
+        myChart_right_one.setOption(option_right_one);
+        myChart_right_two.setOption(option_right_two);
+
+        window.onresize = function () {
+            this.myChart_left_one.resize();
+            this.myChart_left_two.resize();
+            this.myChart_middle_two.resize();
+            this.myChart_right_two.resize();
+            this.myChart_right_one.resize();
+       // .resize后加括号哦，这里还可以写其他的事件
+        };
+    </script>
+
+</body>
+</html>
